@@ -9,7 +9,9 @@ const bodyParser = require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(cors());
+app.use(cors({
+    origin: 'https://www.section.io'
+}));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -23,5 +25,5 @@ app.get('/', (req,res) =>{
 
 app.use('/api', AuthRoute)
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {console.log(`App listening on port ${PORT}`)});
