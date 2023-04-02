@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 app.use(cors());
 
 app.get('/', (req,res) =>{
-    res.json("Medaid Project")
+    res.send("Medaid Project")
   
 })
 
