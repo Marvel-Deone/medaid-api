@@ -41,13 +41,14 @@ const register = async (req, res) => {
                     error: err
                 })
             }
+
     
             let user = new User({
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 middleName: req.body.middleName,
                 username: req.body.username,
-                email: req.body.email.tolowercase(),
+                email:  req.body.email.toLowerCase(),
                 phone: req.body.phone,
                 address: req.body.address,
                 dob: req.body.dob,
