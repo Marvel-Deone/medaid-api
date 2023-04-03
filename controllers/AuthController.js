@@ -47,7 +47,7 @@ const register = async (req, res) => {
                 lastName: req.body.lastName,
                 middleName: req.body.middleName,
                 username: req.body.username,
-                email: req.body.email,
+                email: req.body.email.tolowercase(),
                 phone: req.body.phone,
                 address: req.body.address,
                 dob: req.body.dob,
