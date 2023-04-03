@@ -85,7 +85,7 @@ const login = (req, res) => {
     if(!(email && password)) {
         res.status(400).send({ message: "All input is required"})
     }
-    User.findOne({$or: [{email: email}, {email: phone}]}).then( user => {
+    User.findOne({$or: [{email: email.toLowerCase()}, {email: phone}]}).then( user => {
         if (user) {
             bcrypt.compare(password, user.password, function (err, result) {
                 if (err) {
