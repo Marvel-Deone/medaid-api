@@ -11,7 +11,7 @@ const register = async (req, res) => {
     const { firstName, lastName, username, email, gender, address, dob, password, phone } = req.body;
 
 
-    if(!(username && firstName && lastName && email && phone && address && gender && password)) {
+    if(!(username && email && phone && password)) {
         res.status(400).send({ message: "All input is required"})
     }
 
