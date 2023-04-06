@@ -3,13 +3,11 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
     firstName: {
-        type: String,
-        required: true
+        type: String
     },
     
     lastName: {
-        type: String,
-        required: true
+        type: String
     },
 
     middleName: {
@@ -35,8 +33,7 @@ const userSchema = new Schema({
     },
 
     address: {
-        type: String,
-        required: true
+        type: String
     },
 
     dob: {
@@ -44,8 +41,7 @@ const userSchema = new Schema({
     },
 
     gender: {
-        type: String,
-        required: true
+        type: String
     },
 
     blood_group: {
