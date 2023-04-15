@@ -65,8 +65,10 @@ const userSchema = new Schema({
         required: true
     },
     confirm_email_pin:{
-        type: String,
-        
+        type: String,  
+    },
+    connections:{
+        type:Array
     }
 }, {timestamps: true}); 
 
