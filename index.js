@@ -4,6 +4,8 @@ require('./config')
 const express = require('express')
 const cors = require('cors')
 const AuthRoute = require('./routes/auth');
+const MessagesRoute = require('./routes/messages.route');
+const UserRoute = require('./routes/user.route');
 const app = express()
 const bodyParser = require('body-parser')
 
@@ -22,6 +24,8 @@ app.get('/', (req,res) =>{
 })
 
 app.use('/api', AuthRoute)
+app.use('/api/user',UserRoute)
+app.use('/api/messages', MessagesRoute )
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {console.log(`App listening on port ${PORT}`)});
