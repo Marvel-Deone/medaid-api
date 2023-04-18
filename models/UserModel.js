@@ -3,15 +3,18 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
     firstName: {
-        type: String
+        type: String,
+        default: ''
     },
     
     lastName: {
-        type: String
+        type: String,
+        default: ''
     },
 
     middleName: {
-        type: String
+        type: String,
+        default: ''
     },
 
     username: {
@@ -33,39 +36,62 @@ const userSchema = new Schema({
     },
 
     address: {
-        type: String
+        type: String,
+        default: ''
     },
 
     dob: {
         type: String,
+        default: ''
     },
 
     gender: {
-        type: String
+        type: String,
+        default: ''
     },
 
     blood_group: {
-        type: String
+        type: String,
+        default: ''
     },
 
     genotype: {
-        type: String
+        type: String,
+        default: ''
     },
 
     current_medical_condition: {
-        type: String
+        type: String,
+        default: ''
     },
 
     past_medical_condition: {
-        type: String
+        type: String,
+        default: ''
     },
 
+    allergies: {
+        type: String,
+        default: ''
+    },
+
+    medication: {
+        type: String,
+        default: ''
+    },
+
+    medical_note: {
+        type: String,
+        default: ''
+    },
+    
     password: {
         type: String,
         required: true
     },
     confirm_email_pin:{
-        type: String,  
+        type: String,
+        default: ''  
     },
     connections:{
         type:Array
