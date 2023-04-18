@@ -229,45 +229,38 @@ const login = (req, res) => {
   })
 }
 
-const changePassword = async (req, res) => {
-  let { email, password, old_password, new_password } = req.body;
-  let id = req.uid;
-  if (!email, !password, !old_password, !new_password) {
-    return res.status(401).json({ message: "All fields must be filled", success: false });
-  }
+// const changePassword = async (req, res) => {
+//   let { email, password, old_password, new_password } = req.body;
+//   let id = req.uid;
+//   if (!email, !password, !old_password, !new_password) {
+//     return res.status(401).json({ message: "All fields must be filled", success: false });
+//   }
 
-  UserModel.findOne({ _id: id }).then(user => {
-    if (user) {
-      bcrypt.compare(old_password, user.password, function (err, result) {
-        if (err) {
-          return res.json({ message: err.message, success: false });
-        }
+//   UserModel.findOne({ _id: id }).then(user => {
+//     if (user) {
+//       bcrypt.compare(old_password, user.password, function (err, result) {
+//         if (err) {
+//           return res.json({ message: err.message, success: false });
+//         }
 
-        if (result) {
-          // let token = jwt.sign({ user_id: user._id, email }, JWT_KEY, { expiresIn: '2h' });
-          // res.status(200).send({
-          //   success: true,
-          //   message: 'Login successful',
-          //   token
-          // })
+//         if (result) {
+//           UserModel.updateOne({ _id: id }, { password: new_password }).exec().then(result => {
+//             console.log('result:', result);
+//           }).catch(err => {
+//             return res.json({ message: err.message, success: false });
+//           })
+//         }
 
-          UserModel.updateOne({ _id: id }, { password: new_password }).exec().then(result => {
-            console.log('result:', result);
-          }).catch(err => {
-            return res.json({ message: err.message, success: false });
-          })
-        }
+//       })
+//     } else {
+//       res.status(400).send({
+//         success: false,
+//         message: 'User does not exist'
+//       })
+//     }
+//   })
 
-      })
-    } else {
-      res.status(400).send({
-        success: false,
-        message: 'User does not exist'
-      })
-    }
-  })
-
-}
+// }
 
 
 
@@ -275,5 +268,5 @@ module.exports = {
   register,
   login,
   confirmPin,
-  changePassword
+  // changePassword
 }

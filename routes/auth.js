@@ -7,7 +7,7 @@ const { verifyToken } = require('../middleware/validate_user_token')
 router.post('/auth/register', AuthController.register)
 router.post('/auth/login', AuthController.login)
 router.post('/auth/verifyemail', AuthController.confirmPin)
-router.post('/auth/changePassword', verifyToken, AuthController.changePassword)
+// router.post('/auth/changePassword', verifyToken, AuthController.changePassword)
 
 
 
