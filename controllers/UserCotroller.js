@@ -33,14 +33,14 @@
   };
 
   const updateProfile = async (req, res) => {
-    let { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition } = req.body;
+    let { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note } = req.body;
 
     let id = req.uid;
     console.log('id', id);
 
-    if (!firstName || !lastName || !phone || !dob || !address || !gender) return res.status(401).json({ message: "All fields must be filled", success: false });
+    if (!firstName || !lastName || !phone || !dob || !address || !gender) return res.status(401).json({ message: "First name, last name, phone number, addresss and gender must be filled", success: false });
 
-    await UserModel.updateOne({ _id: id }, { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition }).exec().then(result => {
+    await UserModel.updateOne({ _id: id }, { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note }).exec().then(result => {
       if (!result) return res.status(403).json({ message: "Unable to update user info", success: false })
       return res.status(200).json({ message: "Profile updated", success: true, error: null })
     }).catch((err) => {

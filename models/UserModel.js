@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+    role_id: {
+        type: Number,
+        default: '1',
+        required: true
+    },
     firstName: {
         type: String,
         default: ''
