@@ -37,8 +37,20 @@
 
     let id = req.uid;
     console.log('id', id);
-
-    if (!firstName || !lastName || !phone || !dob || !address || !gender) return res.status(401).json({ message: "First name, last name, phone number, addresss and gender must be filled", success: false });
+    
+    if (!firstName) {
+      return res.status(401).json({ message: "First name must be filled", success: false });
+    }else if (!lastname) {
+      return res.status(401).json({ message: "Last name must be filled", success: false });
+    }else if (!phone) {
+      return res.status(401).json({ message: "Phone number must be filled", success: false });
+    }else if (!dob) {
+      return res.status(401).json({ message: "Date of birth must be filled", success: false });
+    }else if (!address) {
+      return res.status(401).json({ message: "Address must be filled", success: false });
+    }else if (!gender) {
+      return res.status(401).json({ message: "Gender must be filled", success: false });
+    }
 
     await UserModel.updateOne({ _id: id }, { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note }).exec().then(result => {
       if (!result) return res.status(403).json({ message: "Unable to update user info", success: false })
