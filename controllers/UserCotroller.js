@@ -38,10 +38,10 @@
     let id = req.uid;
     console.log('id', id);
     
-    if (!firstName) {
-      return res.status(401).json({ message: "First name must be filled", success: false });
-    }else if (!lastname) {
+    if (!lastName) {
       return res.status(401).json({ message: "Last name must be filled", success: false });
+    }else if (!firstName) {
+      return res.status(401).json({ message: "First name must be filled", success: false });
     }else if (!phone) {
       return res.status(401).json({ message: "Phone number must be filled", success: false });
     }else if (!dob) {
