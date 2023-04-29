@@ -9,7 +9,7 @@
     router.get('/currentuser/:currentUser', UserController.getCurrentUser);
     router.get('/allUsers/:currentUser', UserController.getAllUsers);
     router.get('/profile', verifyToken, UserController.getProfile)
-    router.post('/updateProfile', verifyToken, UserController.updateProfile)
+    router.post('/updateProfile', verifyToken, UserController.updateProfile);
     //  router.post('/keepUpWith', UserController.getKeepUpWith);
     //  router.post('/looseTrack', UserController.getLooseTrack);
 

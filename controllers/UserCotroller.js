@@ -25,47 +25,45 @@
   const getProfile = async (req, res) => {
     let id = req.uid;
     console.log('id: ' + id);
-       await UserModel.findOne({ _id: id }).exec().then(result => {
-        return ( res.json({ message: "Fetched Successfully", profile:result ,success: true }));
-      }).catch(err => {
+    await UserModel.findOne({ _id: id }).exec().then(result => {
+      return (res.json({ message: "Fetched Successfully", profile: result, success: true }));
+    }).catch(err => {
       return res.json({ message: err.message, success: false });
-      });
+    });
   };
 
   const updateProfile = async (req, res) => {
-    let { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note } = req.body;
+    let { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note, sosContact } = req.body;
 
     let id = req.uid;
     console.log('id', id);
-    
+
     if (!lastName) {
       return res.status(401).json({ message: "Surname must be filled", success: false });
-    }else if (!firstName) {
+    } else if (!firstName) {
       return res.status(401).json({ message: "First name must be filled", success: false });
-    }else if (!phone) {
+    } else if (!phone) {
       return res.status(401).json({ message: "Phone number must be filled", success: false });
-    }else if (!gender) {
+    } else if (!gender) {
       return res.status(401).json({ message: "Gender must be filled", success: false });
-    }else if (!dob) {
+    } else if (!dob) {
       return res.status(401).json({ message: "Date of birth must be filled", success: false });
-    }else if (!address) {
+    } else if (!address) {
       return res.status(401).json({ message: "Address must be filled", success: false });
     }
 
-    await UserModel.updateOne({ _id: id }, { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note }).exec().then(result => {
+
+    await UserModel.updateOne({ _id: id }, { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note, sosContact }).exec().then(result => {
       if (!result) return res.status(403).json({ message: "Unable to update user info", success: false })
+      console.log(firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note );
       return res.status(200).json({ message: "Profile updated", success: true, error: null })
     }).catch((err) => {
-      return res.status(503).json({ message: "Service unavailable", success: false });
+      return res.status(503).json({ message: err, success: false });
     })
 
-  //  await UserModel.updateOne({ _id: id }, { firstName, lastName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition }, (err, result) => {
-  //     if (!result) return res.status(403).json({ message: "Unable to update user info", success: false })
-  //     if (err) return res.status(503).json({ message: "Service unavailable", success: false })
-  
-  //     return res.status(200).json({ message: "Profile updated", success: true, error: null })
-  //   })
   }
+
+
   const getCurrentUser = async (req, res) => {
     try {
       const currentUser = await UserModel.findOne({ email: req.params.currentUser });

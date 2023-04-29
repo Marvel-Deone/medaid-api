@@ -100,6 +100,10 @@ const userSchema = new Schema({
     },
     connections:{
         type:Array
+    },
+    sosContact: {
+        type:Array,
+        default: []
     }
 }, {timestamps: true}); 
 
