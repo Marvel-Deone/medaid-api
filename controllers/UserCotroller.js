@@ -12,6 +12,7 @@ const getDashboard = async (req, res) => {
             res.status(500).send({ message: 'Timed out', err, status: false });
         } else {
             const email = result.email;
+           
             try {
                 const user = await User.findOne({ email: email }).exec();
                 res.send({ message: 'Welcome', status: true, result: user });

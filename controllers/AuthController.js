@@ -63,7 +63,7 @@ const register = async (req, res) => {
   
       user.save()
         .then(user => {
-          verifyEmail(req.body.email,res);
+            
           return res.json({
             success: true,
             message: 'Registered successfully!'
