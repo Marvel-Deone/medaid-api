@@ -4,14 +4,15 @@ const addMessage =async(req,res,next)=>{
    
     try{
         const {from, to ,message}= req.body;
-        console.log(from, to , message);
+   
         const data= await  messageModel.create({
             message:{text:message},
             users:[from,to],
             sender:from,
 
         })
-        console.log(data);
+
+        
         if(data)return res.json({message:"Message added successfully"});
         return res.json({message:"Failed to add message into database"});
     }catch(ex){
@@ -19,7 +20,30 @@ const addMessage =async(req,res,next)=>{
     }
 
 }
+const getAllMessages = async (req,res,next)=>{
+  
+    try{
+        const {from, to}= req.body;
+        const messages = await messageModel.find({
+            users:{
+                $all:[from,to]
 
+            },
+
+        }).sort({updatedAt:1});
+        const projectedMessages = messages.map((msg)=>{
+            return {
+                fromSelf:msg.sender.toString()=== from,
+                message:msg.message.text,    
+            }
+        });
+
+         res.json(projectedMessages)
+    }catch(ex){
+
+    }
+}
 module.exports ={
-    addMessage
+    addMessage,
+    getAllMessages 
 }
