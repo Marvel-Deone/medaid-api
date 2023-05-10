@@ -9,6 +9,7 @@ const URI = process.env.MONGO_URI
 async function connect() {
     try {
         await mongoose.connect(URI);
+        
         console.log("Connected Successfully");
     } catch (err) {
         console.log(err);

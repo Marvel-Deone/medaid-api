@@ -8,6 +8,7 @@ const JWT_KEY = process.env.JWT_KEY
 
 
 const register = async (req, res) => {
+  console.log("hello");
   const { firstName, lastName, username, email, gender, address, dob, password, phone } = req.body;
 
   if (!(username && email && phone && password)) {
@@ -21,6 +22,7 @@ const register = async (req, res) => {
   if (checkUser) {
     return res.status(409).send({
       success: false,
+
       message: "Email already exist"
     });
   } else if (checkUserUsername) {
@@ -89,7 +91,7 @@ const register = async (req, res) => {
 
 const verifyEmail = async (email, res) => {
   try {
-    const user = await User.findOne({ email: email });
+    const user = await UserModel.findOne({ email: email });
     if (!user) {
       return res.status(404).send({ message: 'User not found', status: false });
     }
@@ -119,16 +121,17 @@ const verifyEmail = async (email, res) => {
 
     const info = await mailTransporter.sendMail(mailOptions);
     console.log('Verification email sent: ' + info.response);
-    //   res.status(200).send({ message: 'Verification email sent successfully', status: true });
+   res.status(200).send({ message: 'Verification email sent successfully', status: true });
   } catch (err) {
 
-    //   res.status(500).send({ message: 'Error sending verification email', status: false });
+       res.status(500).send({ message: 'Error sending verification email', status: false });
   }
-};
+}; 
 
-const confirmPin = async (req, res) => {
+const confirmPin = async (req, res) =>  {
   try {
-    const user = await User.findOne({ email: req.body.email })
+    console.log("Hello");
+    const user = await UserModel.findOne({ email: req.body.email })
     if (!user) {
       return res.status(404).send({ message: 'User not found', status: false });
     }
@@ -136,6 +139,7 @@ const confirmPin = async (req, res) => {
       return res.send({ message: 'Invalid Code', status: false });
     } else {
       welcomeEmail(req.body.email)
+      
       return res.send({ message: 'Valid Code, A welcoming email has been sent to your email. ', status: true });
     }
 
@@ -149,7 +153,7 @@ const confirmPin = async (req, res) => {
 
 const welcomeEmail = async (email) => {
   try {
-    const user = await User.findOne({ email: email });
+    const user = await UserModel.findOne({ email: email });
     if (!user) {
       return res.status(404).send({ message: 'User not found', status: false });
     }

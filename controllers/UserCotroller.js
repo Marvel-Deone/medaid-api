@@ -24,7 +24,7 @@
 
   const getProfile = async (req, res) => {
     let id = req.uid;
-    console.log('id: ' + id);
+    
     await UserModel.findOne({ _id: id }).exec().then(result => {
       return (res.json({ message: "Fetched Successfully", profile: result, success: true }));
     }).catch(err => {

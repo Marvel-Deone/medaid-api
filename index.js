@@ -8,6 +8,7 @@ const cors = require('cors');
 const AuthRoute = require('./routes/auth');
 const MessagesRoute = require('./routes/messages.route');
 const UserRoute = require('./routes/user.route');
+const QuoteRoute = require('./routes/quote.route');
 const app = express();
 const bodyParser = require('body-parser');
 const http = require('http');
@@ -24,7 +25,7 @@ app.get('/', (req,res) =>{
 app.use('/api', AuthRoute);
 app.use('/api/user',UserRoute);
 app.use('/api/messages', MessagesRoute );
-
+app.use('/api/quote', QuoteRoute );
 const server = http.createServer(app);
 const io = socket(server, {
   cors: {
@@ -49,14 +50,16 @@ io.on('connection', (socket) => {
         io.emit('msg-receive', data.msg);
 
     }
-  })
+  })  
 
   socket.on("message", (data => {
      socket.emit('out-going', data);
     socket.broadcast.emit('new-message', data);
   }))
+
 });
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {console.log(`App listening on port ${PORT}`)});
+
 
