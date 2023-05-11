@@ -7,7 +7,10 @@ const express = require('express');
 const cors = require('cors');
 const AuthRoute = require('./routes/auth');
 const MessagesRoute = require('./routes/messages.route');
+const BlogRoute = require('./routes/blog.route');
 const UserRoute = require('./routes/user.route');
+const medicationRoute = require('./routes/medication.route');
+const reminderRoute = require('./routes/reminder.route');
 const app = express();
 const bodyParser = require('body-parser');
 const http = require('http');
@@ -24,6 +27,9 @@ app.get('/', (req,res) =>{
 app.use('/api', AuthRoute);
 app.use('/api/user',UserRoute);
 app.use('/api/messages', MessagesRoute );
+app.use('/api/blog', BlogRoute);
+app.use('/api/medication', medicationRoute);
+app.use('/api/reminder', reminderRoute);
 
 const server = http.createServer(app);
 const io = socket(server, {
