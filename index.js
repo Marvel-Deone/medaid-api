@@ -9,13 +9,14 @@ const AuthRoute = require('./routes/auth');
 const MessagesRoute = require('./routes/messages.route');
 const UserRoute = require('./routes/user.route');
 const QuoteRoute = require('./routes/quote.route');
+const ExpertRoute = require('./routes/expert.route');
 const app = express();
 const bodyParser = require('body-parser');
 const http = require('http');
 const socket = require('socket.io');
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true , limit:"20mb"}));
+app.use(bodyParser.json({limit:"20mb"}));
 app.use(cors());
 
 app.get('/', (req,res) =>{
@@ -26,6 +27,7 @@ app.use('/api', AuthRoute);
 app.use('/api/user',UserRoute);
 app.use('/api/messages', MessagesRoute );
 app.use('/api/quote', QuoteRoute );
+app.use('/api/expert', ExpertRoute );
 const server = http.createServer(app);
 const io = socket(server, {
   cors: {
