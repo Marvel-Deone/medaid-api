@@ -1,5 +1,3 @@
-
-
 require('dotenv').config();
 require('./config');
 
@@ -11,6 +9,7 @@ const BlogRoute = require('./routes/blog.route');
 const UserRoute = require('./routes/user.route');
 const medicationRoute = require('./routes/medication.route');
 const reminderRoute = require('./routes/reminder.route');
+const quoteRoute = require('./routes/quote.route');
 const app = express();
 const bodyParser = require('body-parser');
 const http = require('http');
@@ -30,6 +29,7 @@ app.use('/api/messages', MessagesRoute );
 app.use('/api/blog', BlogRoute);
 app.use('/api/medication', medicationRoute);
 app.use('/api/reminder', reminderRoute);
+app.use('/api/quote', quoteRoute);
 
 const server = http.createServer(app);
 const io = socket(server, {
