@@ -14,6 +14,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const http = require('http');
 const socket = require('socket.io');
+const setupMedicationNotification = require('./utils/medicationNotification');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -22,6 +23,8 @@ app.use(cors());
 app.get('/', (req,res) =>{
     res.send("Medaid Project");
 });
+
+setupMedicationNotification();
 
 app.use('/api', AuthRoute);
 app.use('/api/user',UserRoute);

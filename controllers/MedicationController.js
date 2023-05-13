@@ -3,11 +3,12 @@ const medicationModel = require('../models/MedicationModel')
 const addMedication = async(req, res, next) => {
     let id = req.uid;
 
-    const { user_id, username, medication } = req.body;
+    const { user_id, username, email,  medication } = req.body;
 
     const data = await medicationModel.create({
             user_id: id, 
             username,
+            email,
             medication
         });
         

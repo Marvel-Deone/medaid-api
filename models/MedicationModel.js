@@ -11,6 +11,10 @@ const medicationSchema = new Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        required: true
+    },
     medication: {
         drug_name: {
             type: String,
@@ -23,6 +27,11 @@ const medicationSchema = new Schema({
         daily: {
             type: String,
             required: true
+        },
+        interval: {
+         is_morning: Boolean,
+         is_afternoon: Boolean,
+         is_night: Boolean
         },
     }
 },  {timestamps: true});
