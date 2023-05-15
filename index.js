@@ -15,6 +15,7 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const socket = require('socket.io');
 const setupMedicationNotification = require('./utils/medicationNotification');
+const setupReminderNotification = require('./utils/reminderNotification');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -25,6 +26,7 @@ app.get('/', (req,res) =>{
 });
 
 setupMedicationNotification();
+setupReminderNotification();
 
 app.use('/api', AuthRoute);
 app.use('/api/user',UserRoute);

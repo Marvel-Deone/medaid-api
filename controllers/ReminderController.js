@@ -3,11 +3,12 @@ const reminderModel = require('../models/ReminderModel');
 const addReminder = async(req, res, next) => {
     let id = req.uid;
 
-    const { user_id, username, reminder } = req.body;
+    const { user_id, username, email, reminder } = req.body;
 
     const data = await reminderModel.create({
             user_id: id, 
             username,
+            email,
             reminder
         });
         

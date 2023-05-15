@@ -11,6 +11,10 @@ const reminderSchema = new Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        required: true
+    },
     reminder: {
         title: {
             type: String,
