@@ -1,4 +1,5 @@
 const ExpertModel = require("../models/ExpertModel");
+const NotificationModel = require("../models/NotificationModel"); 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cloudinary = require('cloudinary').v2;
@@ -199,9 +200,50 @@ const getSignup = async (req, res) => {
   })
   }
 
+  const getAllExpert = async (req, res) => {
+   
+    try {
+      const users = await ExpertModel.find({ email: { $ne: req.params.currentUser } });
 
+      res.send({ status: true, users });
+    } catch (err) {
+      res.status(500).send({ message: 'Internal server error', status: false });
+    }
+
+
+  }
+
+ const getConsultRequest= async (req, res) => {
+  const { message, senderId, senderUserName, receiverId } = req.body;
+
+  NotificationModel.create({ message, senderId, senderUserName ,receiverId})
+    .then(() => {
+      res.status(200).json({ message: 'Consult request received' ,status:true});
+    })
+    .catch((error) => {
+      console.error('Error saving notification:', error);
+      res.status(500).json({ error: 'Failed to save notification' });
+    });
+
+ }
+
+ const getAcceptRequest= async(req, res) => {
+  const { message, senderId, senderUserName, receiverId } = req.body;
+  NotificationModel.create({ message, senderId, senderUserName ,receiverId})
+    .then(() => {
+      res.status(200).json({ message: 'Consult request received' ,status:true});
+    })
+    .catch((error) => {
+      console.error('Error saving notification:', error);
+      res.status(500).json({ error: 'Failed to save notification' });
+    });
+ }
 module.exports = {
   getSendPin,
   getSignup,
-  getlogin
+  getlogin,
+  getAllExpert,
+  getConsultRequest,
+  getAcceptRequest,
+
 };

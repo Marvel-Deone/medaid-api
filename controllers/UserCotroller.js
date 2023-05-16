@@ -1,5 +1,7 @@
   const UserModel = require('../models/UserModel')
   const bcrypt = require('bcryptjs')
+  const ExpertModel = require("../models/ExpertModel");
+  const NotificationModel = require('../models/NotificationModel')
   const jwt = require('jsonwebtoken')
   require('dotenv');
 
@@ -24,14 +26,26 @@
 
   const getProfile = async (req, res) => {
     let id = req.uid;
-    
-    await UserModel.findOne({ _id: id }).exec().then(result => {
-      return (res.json({ message: "Fetched Successfully", profile: result, success: true }));
-    }).catch(err => {
+  
+    try {
+      let userModelResult = await UserModel.findOne({ _id: id }).exec();
+  
+      if (userModelResult === null) {
+        let expertModelResult = await ExpertModel.findOne({ _id: id }).exec();
+  
+        if (expertModelResult === null) {
+          return res.json({ message: "Profile not found", success: false });
+        }
+  
+        return res.json({ message: "Fetched Successfully", profile: expertModelResult, success: true });
+      }
+  
+      return res.json({ message: "Fetched Successfully", profile: userModelResult, success: true });
+    } catch (err) {
       return res.json({ message: err.message, success: false });
-    });
+    }
   };
-
+  
   const updateProfile = async (req, res) => {
     let { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note, sosContact } = req.body;
 
@@ -73,8 +87,16 @@
       res.status(500).send({ message: 'Internal server error', status: false });
     }
   };
+  const getNotification = async (req, res) => {
+    try {
+      const notifications = await NotificationModel.find({}).exec();
 
-
+      return res.json({ message: "Fetched Successfully", notifications, success: true });
+    } catch (error) {
+      return res.json({ message: error.message, success: false });
+    }
+  };
+  
 
 
   //   const getKeepUpWith = async (req, res) => {
@@ -122,5 +144,6 @@
     //  getKeepUpWith,
     getCurrentUser,
     getProfile,
-    updateProfile
+    updateProfile,
+    getNotification
   }
