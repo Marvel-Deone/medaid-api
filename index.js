@@ -10,6 +10,7 @@ const UserRoute = require('./routes/user.route');
 const medicationRoute = require('./routes/medication.route');
 const reminderRoute = require('./routes/reminder.route');
 const quoteRoute = require('./routes/quote.route');
+const selfAssessmentRoute = require('./routes/selfAssessment.route');
 const app = express();
 const bodyParser = require('body-parser');
 const http = require('http');
@@ -35,6 +36,7 @@ app.use('/api/blog', BlogRoute);
 app.use('/api/medication', medicationRoute);
 app.use('/api/reminder', reminderRoute);
 app.use('/api/quote', quoteRoute);
+app.use('/api/selfAssessment', selfAssessmentRoute);
 
 const server = http.createServer(app);
 const io = socket(server, {
