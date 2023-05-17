@@ -35,8 +35,11 @@ const getAllMessages = async (req,res,next)=>{
             return {
                 fromSelf:msg.sender.toString()=== from,
                 message:msg.message.text,    
+                time: msg.updatedAt
+                
             }
         });
+        console.log(projectedMessages);
 
          res.json(projectedMessages)
     }catch(ex){

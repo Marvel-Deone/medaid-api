@@ -9,9 +9,9 @@ require("dotenv");
 const JWT_KEY = process.env.JWT_KEY 
 
 cloudinary.config({
-    cloud_name: "dapoayodeji123",
-    api_key: "528362254166623",
-    api_secret: "mOGw9XSbNgeENRRgtFq4WLZRyMo"
+   cloud_name: "dewerisnv",
+  api_key: "515285726621649",
+  api_secret: "XtyPveANzjPhtPCR_RZ_C9LeFmg"
   });
 
 const getSendPin = async (req, res) => {
