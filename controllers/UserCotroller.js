@@ -81,8 +81,10 @@
 
     try {
       const users = await UserModel.find({ email: { $ne: req.params.currentUser } });
+      const experts = await ExpertModel.find({ email: { $ne: req.params.currentUser } })
+      const mergedUsers = [...users, ...experts];
 
-      res.send({ status: true, users });
+      res.send({ status: true, users:mergedUsers });
     } catch (err) {
       res.status(500).send({ message: 'Internal server error', status: false });
     }
@@ -147,3 +149,9 @@
     updateProfile,
     getNotification
   }
+
+
+
+
+
+
