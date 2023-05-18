@@ -121,7 +121,7 @@ const verifyEmail = async (email, res) => {
 
     const info = await mailTransporter.sendMail(mailOptions);
     console.log('Verification email sent: ' + info.response);
-   res.status(200).send({ message: 'Verification email sent successfully', status: true });
+   res.status(200).json({ message: 'Verification email sent successfully', status: true });
   } catch (err) {
 
        res.status(500).send({ message: 'Error sending verification email', status: false });
@@ -130,7 +130,6 @@ const verifyEmail = async (email, res) => {
 
 const confirmPin = async (req, res) =>  {
   try {
-    console.log("Hello");
     const user = await UserModel.findOne({ email: req.body.email })
     if (!user) {
       return res.status(404).send({ message: 'User not found', status: false });
@@ -140,14 +139,16 @@ const confirmPin = async (req, res) =>  {
     } else {
       welcomeEmail(req.body.email)
       
-      return res.send({ message: 'Valid Code, A welcoming email has been sent to your email. ', status: true });
+      console.log("Confirm");
+      return res.send({ message: 'Valid Code, A welcoming email has been sent to your email.', status: true });
     }
-
-
+    
+    
   } catch (err) {
     console.error(err);
+  
     return res.status(500).send({ message: 'Internal Server Error', status: false });
-
+    
   }
 }
 
@@ -189,7 +190,7 @@ const welcomeEmail = async (email) => {
     console.log('Verification email sent: ' + info.response);
     //   res.status(200).send({ message: 'Verification email sent successfully', status: true });
   } catch (err) {
-
+      console.log(err);
     //   res.status(500).send({ message: 'Error sending verification email', status: false });
   }
 

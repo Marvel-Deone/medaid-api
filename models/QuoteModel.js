@@ -3,12 +3,9 @@ const Schema = mongoose.Schema;
 
 const QuoteSchema = new Schema({
    
-
-   
     nameOfAuthor: {
         type: String,
         unique: true,
-        
     },
 
     quote: {
