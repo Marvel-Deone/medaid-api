@@ -4,6 +4,7 @@ const { login } = require('./AuthController');
 
 const getMedication = async(req, res,next) => {
     let id = req.uid;
+    console.log('id: ' + id);
 
     await MedicationModel.find({ user_id: id }).exec().then(result => {
         return (res.json({ message: "Fetched Successfully", medications: result, success: true }));
@@ -11,6 +12,15 @@ const getMedication = async(req, res,next) => {
         return res.json({ message: err.message, success: false });
       });
 }
+
+    const getSingleMedication = async(req, res,next) => {
+        
+        await MedicationModel.findById(req.params.id).exec().then(result => {
+            return (res.status(200).json({ message: "Fetched Successfully", medication: result, success: true }));
+        }).catch(err => {
+            return res.status(503).json({ message: err.message, success: false });
+        });
+    }
 
     const addMedication = async(req, res, next) => {
     let id = req.uid;
@@ -50,8 +60,9 @@ const getMedication = async(req, res,next) => {
     }
 
 module.exports = {
-    addMedication,
     getMedication,
+    getSingleMedication,
+    addMedication,
     updateMedication,
     deleteMedication
 }

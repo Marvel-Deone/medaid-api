@@ -10,6 +10,15 @@ const getReminder = async(req, res,next) => {
       });
 }
 
+const getSingleReminder = async(req, res,next) => {
+        
+    await ReminderModel.findById(req.params.id).exec().then(result => {
+        return (res.status(200).json({ message: "Fetched Successfully", reminder: result, success: true }));
+    }).catch(err => {
+        return res.status(503).json({ message: err.message, success: false });
+    });
+}
+
 const addReminder = async(req, res, next) => {
     let id = req.uid;
 
@@ -29,7 +38,7 @@ const addReminder = async(req, res, next) => {
 }
 
 const updateReminder = async(req, res, next) => {
-    let { username, email, medication } = req.body;
+    let { username, email, reminder } = req.body;
     await ReminderModel.findByIdAndUpdate(req.params.id, { username, email, reminder }).exec().then(result => {
         if (!result) return res.status(200).json({ message: "Unable to update", result: result, success: false})
         return res.status(200).json({ message: "Updated successfully", result: result, success: true})
@@ -49,6 +58,7 @@ const deleteReminder = async(req, res, next) => {
 
 module.exports = {
     getReminder,
+    getSingleReminder,
     addReminder,
     updateReminder,
     deleteReminder
