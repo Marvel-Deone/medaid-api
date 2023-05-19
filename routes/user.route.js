@@ -9,9 +9,11 @@
     router.get('/currentuser/:currentUser', UserController.getCurrentUser);
     router.get('/allUsers/:currentUser', UserController.getAllUsers);
     router.get('/profile', verifyToken, UserController.getProfile)
+    router.get('/expertprofile', verifyToken, UserController.getProfileExpert)
     router.get('/dashboard', verifyToken, UserController.getDashboardDetails)
     router.post('/updateProfile', verifyToken, UserController.updateProfile);
     router.get('/getNotification',  UserController.getNotification)
+   
     //  router.post('/keepUpWith', UserController.getKeepUpWith);
     //  router.post('/looseTrack', UserController.getLooseTrack);
 
