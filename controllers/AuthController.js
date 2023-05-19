@@ -121,10 +121,10 @@ const verifyEmail = async (email, res) => {
 
     const info = await mailTransporter.sendMail(mailOptions);
     console.log('Verification email sent: ' + info.response);
-   res.status(200).json({ message: 'Verification email sent successfully', status: true });
+  //  res.status(200).json({ message: 'Verification email sent successfully', status: true });
   } catch (err) {
 
-       res.status(500).send({ message: 'Error sending verification email', status: false });
+      //  res.status(500).send({ message: 'Error sending verification email', status: false });
   }
 }; 
 

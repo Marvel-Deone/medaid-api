@@ -1,4 +1,5 @@
   const UserModel = require('../models/UserModel')
+  const MedicationModel = require('../models/MedicationModel');
   const bcrypt = require('bcryptjs')
   const ExpertModel = require("../models/ExpertModel");
   const NotificationModel = require('../models/NotificationModel')
@@ -24,33 +25,30 @@
     });
   };
 
+  getDashboardDetails = async(req, res, next)=> {
+    let id = req.uid;
+    await MedicationModel.find({ user_id: id }).exec().then(result => {
+      return (res.json({ message: "Fetched Successfully", medications: result, success: true }));
+    }).catch(err => {
+      return res.json({ message: err.message, success: false });
+    });
+
+  }
+
   const getProfile = async (req, res) => {
     let id = req.uid;
-  
-    try {
-      let userModelResult = await UserModel.findOne({ _id: id }).exec();
-  
-      if (userModelResult === null) {
-        let expertModelResult = await ExpertModel.findOne({ _id: id }).exec();
-  
-        if (expertModelResult === null) {
-          return res.json({ message: "Profile not found", success: false });
-        }
-  
-        return res.json({ message: "Fetched Successfully", profile: expertModelResult, success: true });
-      }
-  
-      return res.json({ message: "Fetched Successfully", profile: userModelResult, success: true });
-    } catch (err) {
+    console.log('id: ' + id);
+    await UserModel.findOne({ _id: id }).exec().then(result => {
+      return (res.json({ message: "Fetched Successfully", profile: result, success: true }));
+    }).catch(err => {
       return res.json({ message: err.message, success: false });
-    }
-  };
+    })
+  }
   
   const updateProfile = async (req, res) => {
     let { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note, sosContact } = req.body;
 
     let id = req.uid;
-    console.log('id', id);
 
     if (!phone) {
       return res.status(401).json({ message: "Phone number must be filled", success: false });
@@ -59,7 +57,6 @@
 
     await UserModel.updateOne({ _id: id }, { firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note, sosContact }).exec().then(result => {
       if (!result) return res.status(403).json({ message: "Unable to update user info", success: false })
-      console.log(firstName, lastName, middleName, phone, dob, address, gender, blood_group, genotype, current_medical_condition, past_medical_condition, allergies, medication, medical_note );
       return res.status(200).json({ message: "Profile updated", success: true, error: null })
     }).catch((err) => {
       return res.status(503).json({ message: err, success: false });
@@ -142,6 +139,7 @@
 
   module.exports = {
     getDashboard,
+    getDashboardDetails,
     getAllUsers,
     //  getKeepUpWith,
     getCurrentUser,

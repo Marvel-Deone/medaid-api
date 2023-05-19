@@ -12,7 +12,6 @@ const verifyToken = (req,res,next) => {
 
         const { user_id } = jwt.verify(token, process.env.JWT_KEY);
         req.uid = user_id;
-        console.log('req.uid',req.uid, {user_id});
 
         next();
 
