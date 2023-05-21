@@ -4,7 +4,6 @@ const { login } = require('./AuthController');
 
 const getMedication = async(req, res,next) => {
     let id = req.uid;
-    console.log('id: ' + id);
 
     await MedicationModel.find({ user_id: id }).exec().then(result => {
         return (res.json({ message: "Fetched Successfully", medications: result, success: true }));
