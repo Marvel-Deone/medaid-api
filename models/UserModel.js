@@ -94,10 +94,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    confirm_email_pin:{
-        type: String,
-        default: ''  
-    },
+  
     connections:{
         type:Array
     },

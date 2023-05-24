@@ -5,35 +5,81 @@ const nodemailer = require('nodemailer');
 require('dotenv');
 
 const JWT_KEY = process.env.JWT_KEY
-
-
-const register = async (req, res) => {
-  const { firstName, lastName, username, email, gender, address, dob, password, phone } = req.body;
-
+const sendEmailVerificationPin =async(req,res)=>{
+  try {
+   
+  const {username, email, password, phone, pin,confirm_password } = req.body;
+  
   if (!(username && email && phone && password)) {
-    return res.status(400).send({ message: "All input is required" });
+    return res.send({ message: "All input is required" });
   }
-
+  
   const checkUser = await UserModel.findOne({ email });
   const checkUserUsername = await UserModel.findOne({ username });
   const checkUserPhone = await UserModel.findOne({ phone });
 
+
   if (checkUser) {
-    return res.status(409).send({
-      success: false,
+    return res.send({
+      status: false,
       message: "Email already exist"
     });
   } else if (checkUserUsername) {
-    return res.status(409).send({
-      success: false,
+    return res.send({
+      status: false,
       message: "Username already exist"
     });
   } else if (checkUserPhone) {
-    return res.status(409).send({
-      success: false,
+    return res.send({
+      status: false,
       message: "Phone Number already exist"
     });
+  } else if(password !== confirm_password){
+    return res.send({
+      status: false,
+      message: "Password does not match"
+    });
   }
+
+    const mailTransporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_ACCOUNT,
+        pass: process.env.GMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.GMAIL_ACCOUNT,
+      to: email,
+      subject: 'MedAid Verification Code',
+      html: `
+              <div style="background-color: #f8f8f8; padding: 20px;">
+                <h1 style="color: #0072c6; text-align: center;">MedAid Verification Code</h1>
+                <p style="font-size: 16px;">Dear ${username},</p>
+                <p style="font-size: 16px;">Your verification code is:</p>
+                <h2 style="color: #0072c6; text-align: center;">${ pin}</h2>
+                <p style="font-size: 16px;">Please enter this code to verify your email address.</p>
+              </div>
+            `,
+    };
+
+    const info = await mailTransporter.sendMail(mailOptions);
+    console.log('Verification email sent: ' + info.response);
+   res.status(200).json({ message: 'Verification email sent successfully', status: true });
+  } catch (err) {
+
+       res.status(500).send({ message: 'Error sending verification email', status: false });
+  }
+
+
+
+}
+
+const register = async (req, res) => {
+  console.log(req.body);
+  const { firstName, lastName, username, email, gender, address, dob, password, phone } = req.body;
+
 
   bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
     if (err) {
@@ -59,12 +105,13 @@ const register = async (req, res) => {
       current_medical_condition: req.body.current_medical_condition,
       past_medical_condition: req.body.past_medical_condition,
       password: hashedPass,
-      confirm_email_pin: Math.floor(100000 + Math.random() * 900000),
+  
     });
 
     user.save()
       .then(user => {
-        verifyEmail(req.body.email, res);
+        welcomeEmail(req.body.email)
+        
         return res.json({
           success: true,
           message: 'Registered successfully!'
@@ -87,48 +134,10 @@ const register = async (req, res) => {
   });
 };
 
-const verifyEmail = async (email, res) => {
+
+const confirmPin = async (req, res) =>  {
   try {
-    const user = await User.findOne({ email: email });
-    if (!user) {
-      return res.status(404).send({ message: 'User not found', status: false });
-    }
-
-    const mailTransporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.GMAIL_ACCOUNT,
-        pass: process.env.GMAIL_PASSWORD,
-      },
-    });
-
-    const mailOptions = {
-      from: process.env.GMAIL_ACCOUNT,
-      to: email,
-      subject: 'MedAid Verification Code',
-      html: `
-              <div style="background-color: #f8f8f8; padding: 20px;">
-                <h1 style="color: #0072c6; text-align: center;">MedAid Verification Code</h1>
-                <p style="font-size: 16px;">Dear ${user.username},</p>
-                <p style="font-size: 16px;">Your verification code is:</p>
-                <h2 style="color: #0072c6; text-align: center;">${user.confirm_email_pin}</h2>
-                <p style="font-size: 16px;">Please enter this code to verify your email address.</p>
-              </div>
-            `,
-    };
-
-    const info = await mailTransporter.sendMail(mailOptions);
-    console.log('Verification email sent: ' + info.response);
-    //   res.status(200).send({ message: 'Verification email sent successfully', status: true });
-  } catch (err) {
-
-    //   res.status(500).send({ message: 'Error sending verification email', status: false });
-  }
-};
-
-const confirmPin = async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.body.email })
+    const user = await UserModel.findOne({ email: req.body.email })
     if (!user) {
       return res.status(404).send({ message: 'User not found', status: false });
     }
@@ -136,20 +145,23 @@ const confirmPin = async (req, res) => {
       return res.send({ message: 'Invalid Code', status: false });
     } else {
       welcomeEmail(req.body.email)
-      return res.send({ message: 'Valid Code, A welcoming email has been sent to your email. ', status: true });
+      
+      console.log("Confirm");
+      return res.send({ message: 'Valid Code, A welcoming email has been sent to your email.', status: true });
     }
-
-
+    
+    
   } catch (err) {
     console.error(err);
+  
     return res.status(500).send({ message: 'Internal Server Error', status: false });
-
+    
   }
 }
 
 const welcomeEmail = async (email) => {
   try {
-    const user = await User.findOne({ email: email });
+    const user = await UserModel.findOne({ email: email });
     if (!user) {
       return res.status(404).send({ message: 'User not found', status: false });
     }
@@ -185,7 +197,7 @@ const welcomeEmail = async (email) => {
     console.log('Verification email sent: ' + info.response);
     //   res.status(200).send({ message: 'Verification email sent successfully', status: true });
   } catch (err) {
-
+      console.log(err);
     //   res.status(500).send({ message: 'Error sending verification email', status: false });
   }
 
@@ -265,6 +277,7 @@ const login = (req, res) => {
 
 
 module.exports = {
+  sendEmailVerificationPin,
   register,
   login,
   confirmPin,

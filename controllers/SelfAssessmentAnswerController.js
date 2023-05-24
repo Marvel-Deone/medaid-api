@@ -3,15 +3,14 @@ const selfAssessmentAnswerModel = require('../models/SelfAssessmentAnswerModel')
 const saveSelfAssessementAnswer = async(req, res) => {
     let id = req.uid;
 
-    const { user_id, username, email, category, questions, answers } = req.body;
+    const { user_id, username, email, category, questions, questionsAnswers } = req.body;
 
     const data = await selfAssessmentAnswerModel.create({
         user_id: id,
         username,
         email,
         category,
-        questions,
-        answers
+        questionsAnswers
     });
 
     if(data) return (res.status(200).json({ message: "Self assessment submitted successfully", data, success: true }));

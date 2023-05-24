@@ -19,15 +19,11 @@ const selfAssessmentAnswerSchema = new Schema({
         type: String,
         required: true
     },
-    questions: {
-        type: [],
-        required: true
-    },
-    answers: {
+    questionsAnswers: {
         type: [],
         required: true
     }
-});
+}, {timestamps: true});
 
 const selfAssessmentAnswer = mongoose.model('SelfAssessmentAnswer', selfAssessmentAnswerSchema)
 
