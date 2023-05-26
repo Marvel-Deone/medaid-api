@@ -98,9 +98,10 @@ const userSchema = new Schema({
     connections:{
         type:Array
     },
-    sosContact: {
-        type:Array,
-        default: []
+    is_verified: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, {timestamps: true}); 
 
