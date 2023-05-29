@@ -53,6 +53,7 @@ const getProfile = async (req, res) => {
 
     const mergedProfile = { ...userProfiile, ...expertProfiile };
 
+    if (mergedProfile._doc.firstName !== '' && mergedProfile._doc.lastName !== '') mergedProfile._doc.is_profileComplete = true;
 
     return res.json({
       message: "Fetched Successfully",
@@ -83,7 +84,6 @@ const getProfileExpert = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  console.log("Hello  eyin aye ");
   let {
     firstName,
     lastName,

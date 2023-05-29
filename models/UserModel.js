@@ -98,7 +98,7 @@ const userSchema = new Schema({
     connections:{
         type:Array
     },
-    is_verified: {
+    is_profileComplete: {
         type: Boolean,
         required: true,
         default: false
