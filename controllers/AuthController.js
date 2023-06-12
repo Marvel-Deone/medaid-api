@@ -282,4 +282,4 @@ module.exports = {
   login,
   confirmPin,
   // changePassword
-}
+} 
