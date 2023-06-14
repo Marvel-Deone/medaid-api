@@ -1,7 +1,6 @@
 const fs = require('fs');
 const hbs = require('hbs');
 const pdf = require('html-pdf');
-// const html = fs.readFileSync('./views/selfAssessment.html', 'utf8');
 // const options = { format: 'Letter' };
 const selfAssessmentAnswerModel = require('../models/SelfAssessmentAnswerModel');
 
@@ -9,6 +8,7 @@ const selfAssessmentAnswerModel = require('../models/SelfAssessmentAnswerModel')
 const downloadResult = async (req, res) => {
 
     let id = req.uid;
+    let filename;
 
     await selfAssessmentAnswerModel.findById(req.params.id).exec().then(result => {
         let data = result
@@ -18,7 +18,7 @@ const downloadResult = async (req, res) => {
         <body class="boxed">
             <center>
                 <div class="" style="color: red !important;">
-                <p>Done</p>
+                <p>${data.category}</p>
                 </div>
             </center>
             <div class="getResult-div px-3 mb-5">
@@ -63,18 +63,21 @@ const downloadResult = async (req, res) => {
         //Proccessing the base template with the content
         let html = template({ content: webpage })
 
-        var filename = `${data.username}-self-assessment-result${new Date(data.createdAt).toLocaleDateString()}`;
-
-        pdf.create(html, options).toFile('./self-assessment-result.pdf', function (err, res) {
-            if(res) return filename+".pdf"
-            // if (res) return 'self-assessment-result.pdf'
-            if (err) return console.log(err);
-            console.log(res); // { filename: '/app/businesscard.pdf' }
+        
+        filename = `./${data.username}-self-assessment-result.pdf`;
+        pdf.create(html, options).toFile(`./${data.username}-self-assessment-result.pdf`, function (err, res) {
+        // return res.status(200);
+        // if (err) console.log(err);
+        console.log(res);
+        // res.json({filename})
+            
         });
 
         }).catch(err => {
-            return res.status(403).json({ message: err.message, success: false });
+            res.status(403).json({ message: err.message, success: false });
         });
+      res.status(201).json({ message: "Result downloaded successfully", data: filename, status:true });
+        
     // let data = req.body
     
 

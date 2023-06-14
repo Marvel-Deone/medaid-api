@@ -12,6 +12,6 @@ router.get('/answer', verifyToken, SelfAssessmentAnswerController.getSelfAssessm
 router.get('/answer/:id', verifyToken, SelfAssessmentAnswerController.getSingleSelfAssessmentAnswer);
 router.post('/answer', verifyToken, SelfAssessmentAnswerController.saveSelfAssessementAnswer);
 
-router.get('/downloadResult/:id', verifyToken, downloadPDFController.downloadResult);
+router.get('/downloadResult/:id', downloadPDFController.downloadResult);
 
 module.exports = router

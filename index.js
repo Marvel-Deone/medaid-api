@@ -24,6 +24,7 @@ const setupReminderNotification = require('./utils/reminderNotification');
 app.use(bodyParser.urlencoded({ extended: true , limit:"20mb"}));
 app.use(bodyParser.json({limit:"20mb"}));
 app.use(cors());
+app.use(express.static(__dirname + "/./public"));
 
 app.get('/', (req,res) =>{
     res.send("Medaid Project");
