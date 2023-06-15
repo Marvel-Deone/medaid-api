@@ -19,29 +19,25 @@ const downloadResult = async (req, response) => {
         let webpage = `
         <body class="boxed">
             <center>
-                <div class="" style="color: red !important;">
+                <div class="" style="text-align: center !important; font-size: 1.25rem; font-weight: bold;">
                 <p>${data.category}</p>
                 </div>
             </center>
             <div class="getResult-div px-3 mb-5">
-                <p class="text-center" style="font-size: 15px; font-weight: 400;">This result is based on the answers you
+                <p class="text-center" style="text-align: center; font-size: 13px; font-weight: 400;">This result is based on the answers you
                     provider earlier from the self assessment</p>
                 <div class="card card-plain h-100">
                     <div class="card-body p-3">
                         <ul class="list-group">
     
-                            <div class="row mt-2 mb-2">
-                                <!-- <div class="col-12">
-                                    </div> -->
-                                <div class="col-12 col-lg-12 px-3 mt-3 d-flex justify-content-between">
+                                <div class="mydate">
                                     <label class="form-check-label text-body text-truncate w-80 mb-0 fw-bold"
-                                        style="color: #000000D9 !important;" for="flexSwitchCheckDefault">Date
-                                        of Assessment:</label>
-                                    <p class="ms-1" style="color: #000000D9; font-size: 12px;">${new Date(data.createdAt).toLocaleDateString() }</p>
+                                    style="color: #000000D9 !important; font-size: 12px;">Date
+                                    of Assessment :</label>
+                                    <span class="ms-1" style="color: #000000D9; font-size: 12px;">${new Date(data.createdAt).toLocaleDateString() }</span>
                                 </div>
-                            </div>
     
-                            <div class="row mt-2">
+                            <div class="row mt-2" style="margin-top: 20px;">
                                 <div class="col-12 col-lg-12 px-3 mt-3">
                                     ${data.questionsAnswers.map( function(key) { return `
                                         <label for="" class="form-check-label text-body w-80 mb-0 fw-bold"
@@ -60,15 +56,15 @@ const downloadResult = async (req, response) => {
         let options = { format: 'A4' };
 
         //Reads the Base Template from the Views Folder
-        let template = hbs.compile(fs.readFileSync('abc.hbs', 'utf8'));
+        let template = hbs.compile(fs.readFileSync('gen.hbs', 'utf8'));
 
         //Proccessing the base template with the content
         let html = template({ content: webpage });
 
 
         
-        filename = `./${data.username}-self-assessment-result.pdf`;
-        pdf.create(html, options).toFile(`./${data.username}-self-assessment-result.pdf`, function  (err, res) {
+        filename = `./public/${data.username}-self-assessment-result.pdf`;
+        pdf.create(html, options).toFile(`./public/${data.username}-self-assessment-result.pdf`, function  (err, res) {
             console.log('dir', res.filename, filedirectory);
         // return res.status(200);
         // if (err) console.log(err);
