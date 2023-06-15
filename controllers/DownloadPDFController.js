@@ -5,10 +5,12 @@ const pdf = require('html-pdf');
 const selfAssessmentAnswerModel = require('../models/SelfAssessmentAnswerModel');
 
 
-const downloadResult = async (req, res) => {
+const downloadResult = async (req, response) => {
 
     let id = req.uid;
     let filename;
+    let filedirectory;
+
 
     await selfAssessmentAnswerModel.findById(req.params.id).exec().then(result => {
         let data = result
@@ -61,23 +63,24 @@ const downloadResult = async (req, res) => {
         let template = hbs.compile(fs.readFileSync('./views/gen.hbs', 'utf8'));
 
         //Proccessing the base template with the content
-        let html = template({ content: webpage })
+        let html = template({ content: webpage });
+
 
         
         filename = `./${data.username}-self-assessment-result.pdf`;
-        pdf.create(html, options).toFile(`./${data.username}-self-assessment-result.pdf`, function (err, res) {
+        pdf.create(html, options).toFile(`./${data.username}-self-assessment-result.pdf`, function  (err, res) {
+            console.log('dir', res.filename, filedirectory);
         // return res.status(200);
         // if (err) console.log(err);
-        console.log(res);
+        filedirectory = res.filename;
+        console.log('myres', filedirectory);
         // res.json({filename})
-            
-        });
-
-        }).catch(err => {
-            res.status(403).json({ message: err.message, success: false });
-        });
-      res.status(201).json({ message: "Result downloaded successfully", data: filename, status:true });
+        return response.status(200).json({ message: "Result downloaded successfully", data: filename, filedirectory, status:true });
+        }); 
         
+        }).catch(err => {
+            response.status(403).json({ message: err.message, success: false });
+        });
     // let data = req.body
     
 
