@@ -112,7 +112,7 @@ const register = async (req, res) => {
       .then(user => {
         welcomeEmail(req.body.email)
         
-        return res.json({
+        return res.json({ 
           success: true,
           message: 'Registered successfully!'
         });
