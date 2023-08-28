@@ -26,6 +26,7 @@ app.use(bodyParser.json({limit:"20mb"}));
 app.use(cors());
 // app.use(express.static(__dirname + "/./public"));
 
+
 app.get('/', (req,res) =>{
     res.send("Medaid Project");
 });
